@@ -11,6 +11,7 @@ from django.contrib import messages,auth
 from .utils import detectUser,send_verification_email
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
+from vendor.models import Vendor
 
 # Create your views here. restrict user from accessing the customer page
 

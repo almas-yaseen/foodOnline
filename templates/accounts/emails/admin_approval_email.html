@@ -1,0 +1,14 @@
+{% autoescape off %}
+
+hi {{user.first_name}},
+{% if is_approved  %}
+Congragulation your resturant has approved  by admin team 
+
+{%else %}
+Not eligble for activating your restuarant 
+{% endif %}
+
+
+
+
+{% endautoescape %}
