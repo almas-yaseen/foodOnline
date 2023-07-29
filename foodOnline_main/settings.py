@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
+                'accounts.context_processors.get_google_api',
                 
             ],
         },
@@ -161,3 +162,4 @@ EMAIL_HOST_PASSWORD = 'fdlyetgkkimqfvnk' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'default from email'
+GOOGLE_API_KEY = 'AIzaSyDM_t_cT859rJzIJ6-0JoXVOkDkB_jlrA8'
