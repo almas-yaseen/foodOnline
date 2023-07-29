@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'vendor',
+    'menu',
 ]
 
 MIDDLEWARE = [
@@ -162,4 +163,4 @@ EMAIL_HOST_PASSWORD = 'fdlyetgkkimqfvnk' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'default from email'
-GOOGLE_API_KEY = 'AIzaSyDM_t_cT859rJzIJ6-0JoXVOkDkB_jlrA8'
+GOOGLE_API_KEY = 'AIzaSyANnOJ7Zxxb_vsSXJgwctcXDEsFDptAuqk'
