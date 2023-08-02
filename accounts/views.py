@@ -12,7 +12,7 @@ from .utils import detectUser,send_verification_email
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from vendor.models import Vendor
-
+from django.template.defaultfilters import slugify
 # Create your views here. restrict user from accessing the customer page
 
 #restrict customer accessing vendor page  
@@ -77,7 +77,7 @@ def registerUser(request):
 def registerVendor(request):
     if request.user.is_authenticated:
         messages.warning(request,'You are already logged in')
-        return redirect('dashboard')
+        return redirect('myaccount')
     elif request.method == "POST":
         form = UserForm(request.POST)
         v_form = VendorForm(request.POST,request.FILES)
@@ -92,7 +92,8 @@ def registerVendor(request):
             user.save()
             vendor = v_form.save(commit=False)
             vendor.user = user
-            
+            vendor_name = v_form.cleaned_data['vendor_name']
+            vendor.vendor_slug = slugify(vendor_name)+ '-' + str(user.id)
             user_profile = Userprofile.objects.get(user=user)
             print(user_profile,"ksanckasnjkasnkjad")
             vendor.user_profile  = user_profile
@@ -112,8 +113,7 @@ def registerVendor(request):
         v_form = VendorForm()
         
         
-    form = UserForm()
-    v_form = VendorForm()
+   
     context = {
         'form':form,
         'v_form':v_form,
