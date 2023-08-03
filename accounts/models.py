@@ -96,7 +96,7 @@ class Userprofile(models.Model):
     city = models.CharField(max_length=50,blank=True,null=True)
     pin_code = models.CharField(max_length=6,blank=True,null=True)
     latitude = models.CharField(max_length=20,blank=True,null=True)
-    location =gismodels.PointField(blank=True,null=True,srid=4326)
+    location = gismodels.PointField(blank=True,null=True,srid=4326)
     longitude = models.CharField(max_length=20,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -107,6 +107,13 @@ class Userprofile(models.Model):
     
     def __str__(self):
         return self.user.email
+    
+    def save(self,*args,**kwargs):
+        if self.latitude and self.longitude:
+            self.location = Point(float(self.longitude),float(self.longitude))
+            return super(Userprofile,self).save(*args,**kwargs)
+        return super(Userprofile,self).save(*args,**kwargs)
+        
 
             
 @receiver(post_save,sender=User)
