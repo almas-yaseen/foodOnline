@@ -25,13 +25,17 @@
 	<script src="{% static 'js/modernizr.js' %}"></script>
 	<script src="{% static 'js/bootstrap.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-	
+
+	{%  if  '/' == request.path or  'profile' in request.path %}
 	
 	<script src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete" async  ></script>
+
+	{% endif %}
 	
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="{% static 'js/custom.js'%}"></script>
 	<script src="{% static 'js/almas.js'%}"></script>
+	<script src="{% static 'js/new.js'%}"></script>
 
 
 	<style>
