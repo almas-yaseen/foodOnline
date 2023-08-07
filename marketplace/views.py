@@ -4,7 +4,7 @@ from django.http import HttpResponse,JsonResponse
 from menu.models import Category,FoodItem
 from .context_processors import get_cart_counter,get_cart_amounts
 from django.db.models import Prefetch
-from .models import Cart
+from .models import Cart,Tax
 from datetime import date,datetime
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
