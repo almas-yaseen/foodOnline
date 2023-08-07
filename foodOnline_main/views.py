@@ -39,3 +39,5 @@ def home(request):
     }
     print(vendors)
     return render(request,'home.html',context)
+
+
