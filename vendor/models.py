@@ -45,9 +45,10 @@ class Vendor(models.Model):
                 context =  {
                         'user':self.user,
                         'is_approved':self.is_approved,
+                        'to_email':self.user.email,
                     }
                 if self.is_approved == True:
-                    mail_subject = "congratulation your resturant is approved"
+                    mail_subject = "congratulation your restuarant is approved"
              
                     send_notification(mail_subject,mail_template,context)
                 else:

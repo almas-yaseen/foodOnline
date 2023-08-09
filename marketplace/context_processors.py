@@ -38,3 +38,6 @@ def get_cart_amounts(request):
         grand_total = subtotal + tax
     print(tax_dict)
     return dict(subtotal=subtotal, tax=tax, grand_total=grand_total, tax_dict=tax_dict)
+
+
+
