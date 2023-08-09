@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms import UserForm
+from orders.models import Order
 from django.shortcuts import redirect
 from django.contrib.auth.tokens import default_token_generator 
 from django.utils.http import urlsafe_base64_encode
@@ -173,7 +174,15 @@ def myaccount(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def custdashboard(request):
-    return render(request,'accounts/custdashboard.html')
+    orders = Order.objects.filter(user=request.user,is_ordered=True)
+    recent_orders = orders[:5]
+    context = {
+        'orders':orders,
+        'orders_count':orders.count(),
+        'recent_orders':recent_orders,
+        
+    }
+    return render(request,'accounts/custdashboard.html',context)
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
