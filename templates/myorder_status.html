@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% include 'customers/cover.html' %}
+{% block content %}
+
+{% include 'includes/alerts.html' %}
+
+<!-- Main Section Start -->
+<div class="container">
+    {% for order_food in ordered_food %}
+    <article class="card">
+        <header class="card-header"> My Orders / Tracking </header>
+        <div class="card-body">
+            <h6>Order ID: {{ order_food.order.order_number }}</h6>
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
+                    <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fa fa-phone"></i> +1598675986 </div>
+                    <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
+                    <div class="col"> <strong>Tracking #:</strong> <br> BD045903594059 </div>
+                </div>
+            </article>
+            <div class="track">
+                <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order confirmed</span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Ready for pickup</span> </div>
+            </div>
+
+            <hr>
+            <ul class="row">
+                <li class="col-md-4">
+                    <figure class="itemside mb-3">
+                        <div class="aside"><img src="{{ order_food.fooditem.image.url }}" class="img-sm border"></div>
+                        <figcaption class="info align-self-center">
+                            <p class="title">{{ order_food.fooditem }} <br> {{ order_food.quantity }}</p>
+                            <span class="text-muted">{{ order_food.price }} </span>
+                            <h4>{{ order_food.order.status }}</h4>
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+            {% if order_food.order.status != 'Cancelled' %}
+            <button type="button" class="btn btn-danger" onclick="cancelOrder('{{ order_food.order.id }}')">
+                Cancel order
+          
+            
+             
+            </button>
+            
+            {% endif %}
+        </div>
+        <hr>
+    </article>
+    {% endfor %}
+</div>
+<script>
+    
+        function cancelOrder(orderId) {
+            console.log("Cancelling order:", orderId);
+        
+            Swal.fire({
+                title: 'Cancel Order',
+                text: 'Are you sure you want to cancel this order?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user confirms, redirect to the cancel_order view
+                    window.location.href = `/orders/customer/cancel_order/${orderId}/`;
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

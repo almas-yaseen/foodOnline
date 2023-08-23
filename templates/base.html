@@ -14,10 +14,12 @@
 
 	<!-- CSS -->
 	<link href="{% static 'css/iconmoon.css' %}" rel="stylesheet">
+	<script id="monthlyOrderData" type="application/json">{{ monthly_order_data|safe }}</script>
 	<link href="{% static 'css/style.css' %}" rel="stylesheet">
 	<link href="{% static 'css/cs-foodbakery-plugin.css' %}" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/boos.css'%}">
 	
 	<!-- JAVASCRIPT -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -37,6 +39,20 @@
 	<script src="{% static 'js/almas.js'%}"></script>
 	<script src="{% static 'js/new.js'%}"></script>
 	<script src="https://www.paypal.com/sdk/js?client-id={{PAYPAL_CLIENT_ID}}&currency=USD"></script>
+	<!---->
+	<link rel="stylehsheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+	<script>
+		$(document).ready(function(){
+			$('#myTable').DataTable();
+		})
+	</script>
+	
+	
 
 
 	<style>

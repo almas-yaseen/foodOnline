@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User
+from accounts.models import User,Coupon
 from menu.models import FoodItem
 
 # Create your models here.
@@ -23,6 +23,20 @@ class Tax(models.Model):
     
     def __str__(self):
         return self.tax_type
+    
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount_amount = models.DecimalField(decimal_places=2, max_digits=10)
+    is_active = models.BooleanField(default=True)
+    valid_from = models.DateTimeField()
+    valid_to = models.DateTimeField()
+    
+    def __str__(self):
+        return self.code
+    
+
         
     
     

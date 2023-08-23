@@ -37,7 +37,16 @@ class UserManager(BaseUserManager):
      user.save(using=self._db)
      return user
      
-     
+
+class Coupon(models.Model):
+    coupoun_code = models.CharField(max_length=50, unique=True)
+    is_expired = models.BooleanField(default=False)
+    discount_price = models.IntegerField(default=100)
+    minimum_amount = models.IntegerField(default=500)
+    
+    
+
+   
 
 class User(AbstractBaseUser):
     VENDOR = 1

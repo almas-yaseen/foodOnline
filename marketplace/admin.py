@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cart,Tax
+from .models import Cart,Tax,Coupon
 
 class CartAdmin(admin.ModelAdmin):
     list_display = ('user','fooditem','updated_at')
@@ -11,3 +11,4 @@ class TaxAdmin(admin.ModelAdmin):
 
 admin.site.register(Cart,CartAdmin)
 admin.site.register(Tax,TaxAdmin)
+admin.site.register(Coupon)

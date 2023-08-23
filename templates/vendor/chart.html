@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+<div class="main-section">
+    {% include 'includes/cover.html' %}
+    <!-- Container End -->
+</div>
+<div class="page-section account-header buyer-logged-in">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <!-- Load vendor dashboard -->
+                {% include 'includes/v_sidebar.html' %}
+            </div>
+        </div>
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <div class="user-dashboard loader-holder">
+                    <div class="user-holder">
+                        <h5 class="text-uppercase">Chart</h5>
+                        <p class="text-right">Logged in as: {{ user.email }}</p>
+                        <div class="row">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="highest-orders">
+                                    <h6>Highest Orders Month:</h6>
+                                    <p>{{ highest_order_month.month|date:"F Y" }}</p>
+                                    <p>Total Orders: {{ highest_order_month.total_orders }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Display the highest demanded food products -->
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="highest-food-demand">
+                                    <h6>Highest Demanded Food Products:</h6>
+                                    <ul>
+                                        {% for food_item in food_demand_data %}
+                                            <li>{{ food_item.fooditem__food_title }} - {{ food_item.total_ordered }} orders</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Extracting data for the bar chart
+    var foodItems = [
+        {% for food_item in food_demand_data %}
+            "{{ food_item.fooditem__food_title }}",
+        {% endfor %}
+    ];
+
+    var quantities = [
+        {% for food_item in food_demand_data %}
+            {{ food_item.total_ordered }},
+        {% endfor %}
+    ];
+
+    var maxQuantity = Math.max.apply(null, quantities); // Find the highest quantity
+
+    var backgroundColors = quantities.map(quantity => 
+        quantity === maxQuantity ? 'rgba(255, 99, 132, 0.8)' : 'rgba(54, 162, 235, 0.2)'
+    );
+
+    // Creating the bar chart
+    var ctxB = document.getElementById("barChart").getContext('2d');
+    var myBarChart = new Chart(ctxB, {
+        type: 'bar',
+        data: {
+            labels: foodItems,  // Food products on x-axis
+            datasets: [{
+                label: 'Orders',
+                data: quantities,  // Orders (quantities) on y-axis
+                backgroundColor: backgroundColors,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User ,Userprofile
+from .models import User ,Userprofile,Coupon
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
@@ -13,3 +13,4 @@ class CustomUserAdmin(UserAdmin):
     
 admin.site.register(User,CustomUserAdmin)
 admin.site.register(Userprofile)
+admin.site.register(Coupon)

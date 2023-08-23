@@ -1,5 +1,15 @@
 from django.shortcuts import render
+from django.db.models import Count
+from django.db.models import Sum
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models.functions import TruncMonth
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from .forms import VendorForm,OpeningHourForm
+from io import BytesIO
+from django.db.models import Count, Case, When, Value, IntegerField
+import json
+from datetime import datetime 
+from reportlab.pdfgen import canvas
 from django.shortcuts import get_object_or_404,render,redirect,HttpResponse
 from accounts.forms import UserProfileForm
 from django.http import JsonResponse
@@ -8,7 +18,9 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Vendor,openingHour
+from orders.models import OrderedFood,Order
 from menu.models import Category,FoodItem
+
 from menu.forms import CategoryForm,FoodItemForm
 from accounts.views import check_role_vendor
 from django.template.defaultfilters import slugify
@@ -257,3 +269,58 @@ def remove_opening_hours(request,pk=None):
               return JsonResponse({'status':'success','id':pk})
               
         
+
+def order_detail(request, order_number):
+    try:
+        order = Order.objects.get(order_number=order_number, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order, fooditem__vendor=get_vendor(request))
+
+        context = {
+            'order': order,
+            'ordered_food': ordered_food,
+            'subtotal': order.get_total_by_vendor()['subtotal'],
+            'tax_data': order.get_total_by_vendor()['tax_dict'],
+            'grand_total': order.get_total_by_vendor()['grand_total'],
+        }
+    except:
+        return redirect('vendor')
+    return render(request, 'vendor/order_detail.html', context)
+
+
+
+def my_orders(request):
+    vendor = Vendor.objects.get(user=request.user)
+    orders = Order.objects.filter(vendors__in=[vendor.id],is_ordered=True).order_by('-created_at')
+    context = {
+        'orders':orders,
+        
+    }
+    return render(request,'vendor/my_orders.html',context)
+
+
+def chart(request):
+    monthly_order_data = Order.objects.annotate(
+        month=TruncMonth('created_at')
+    ).values('month').annotate(
+        total_orders=Count('id'),
+        canceled_orders=Count(
+            Case(
+                When(status='Cancelled', then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField()
+            )
+        )
+    ).order_by('month')
+    
+    food_demand_data = OrderedFood.objects.values('fooditem__food_title').annotate(
+        total_ordered=Sum('quantity')
+    ).order_by('-total_ordered')[:5]  # Limit to the top 5 products
+    
+    # ... the rest of your code ...
+
+    context = {
+        'monthly_order_data': monthly_order_data,
+        'food_demand_data': food_demand_data,  # Pass the food demand data to the context
+    }
+
+    return render(request, 'vendor/chart.html', context)

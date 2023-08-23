@@ -16,6 +16,8 @@ from django.db.models import    Q
 
 # Create your views here.
 
+
+
 def marketplace(request):
     vendors = Vendor.objects.filter(is_approved=True,user__is_active=True)
     vendor_count = vendors.count()

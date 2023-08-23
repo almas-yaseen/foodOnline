@@ -114,6 +114,17 @@
                                 </span>
 
                             </li>
+                          
+                            
+                                <div class="form-group">
+                                  <label for="exampleFormControlFile1"><b>Coupon:</b></label>
+                                  <input type="text" name="coupon" id="coupon-input" required>
+                                  <br>
+                                  <button type="button" name="coupoun" class="btn btn-success" id="redeem-button">Redeem</button>
+                                </div>
+                                <div id="coupon-message" class="text-center mt-3"></div>
+
+                        
                             <a href="{% url 'checkout' %}" class="btn btn-danger w-100 p-2 mt-3">PROCEED TO CHECKOUT</a>
                     </div>
 
@@ -128,5 +139,46 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const couponInput = document.getElementById('coupon-input');
+        const redeemButton = document.getElementById('redeem-button');
+        const couponMessage = document.getElementById('coupon-message');
+        const subtotalElement = document.getElementById('subtotal');
+        const totalElement = document.getElementById('total');
+
+        redeemButton.addEventListener('click', function() {
+            const couponCode = couponInput.value.trim();
+            
+            if (couponCode === "") {
+                couponMessage.innerText = 'Please enter a coupon code';
+                couponMessage.classList.add('text-danger');
+                return; // Exit the function if the input is empty
+            }
+
+            // Make an AJAX request to your server to validate the coupon code
+            // Replace this with your actual coupon validation logic
+            const isValidCoupon = true; // Example: true if valid, false if not
+            
+            if (isValidCoupon) {
+                // Apply coupon discount and update UI
+                const couponDiscount = 10; // Example: replace with your actual discount value
+                const subtotal = parseFloat(subtotalElement.innerText);
+                const total = subtotal - couponDiscount;
+
+                totalElement.innerText = total.toFixed(2);
+                couponMessage.innerText = 'Coupon applied successfully';
+                couponMessage.classList.add('text-success');
+            } else {
+                couponMessage.innerText = 'Invalid coupon code';
+                couponMessage.classList.add('text-danger');
+            }
+        });
+    });
+</script>
+
+
+
+    
 
 {% endblock %}
